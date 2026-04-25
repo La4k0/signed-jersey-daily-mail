@@ -45,7 +45,11 @@ class JerseyMail:
         print(f"Clicked element with XPath: {xpath}")
 
     async def scrape_products(self):
-        await self.page.goto(self.home_page_url)
+
+        await self.page.goto(self.home_page_url,
+            wait_until="domcontentloaded",
+            timeout=60000
+        )
 
         await self.page.wait_for_selector(selector=f"xpath=//input[contains(@placeholder,'Search')]", timeout=15 * 1000, state='attached')
         await self.page.fill("//input[contains(@placeholder,'Search')]", "signed.*shirt")
