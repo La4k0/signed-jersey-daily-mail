@@ -1,0 +1,5 @@
+python-dotenv
+SQLAlchemy
+playwright
+requests
+colorama
