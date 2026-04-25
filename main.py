@@ -47,9 +47,9 @@ class JerseyMail:
     async def scrape_products(self):
         await self.page.goto(self.home_page_url)
 
-        await self.page.wait_for_selector(selector=f"xpath=//input[contains(@placeholder,'Search')]", timeout=10 * 1000, state='attached')
+        await self.page.wait_for_selector(selector=f"xpath=//input[contains(@placeholder,'Search')]", timeout=15 * 1000, state='attached')
         await self.page.fill("//input[contains(@placeholder,'Search')]", "signed.*shirt")
-        await self.wait_for_selector_and_click("//button[contains(@title,'Search')]", 10 * 1000)
+        await self.wait_for_selector_and_click("//button[contains(@title,'Search')]", 15 * 1000)
 
         sorting_select_value = await self.page.locator("//*[contains(text(),'Sort By')]//following::select//option[contains(.,'Price') and contains(.,'Low to')]").get_attribute("value")
         await self.page.select_option("//*[contains(text(),'Sort By')]//following::select", sorting_select_value)
@@ -59,7 +59,7 @@ class JerseyMail:
         in_budget = True
 
         while in_budget:
-            await self.page.wait_for_selector(selector=f"xpath=(//span[contains(@class,'price') and not(contains(@class,'old')) and not(ancestor::span[contains(@class,'old-price')])])[last()]", timeout=10 * 1000, state='visible')
+            await self.page.wait_for_selector(selector=f"xpath=(//span[contains(@class,'price') and not(contains(@class,'old')) and not(ancestor::span[contains(@class,'old-price')])])[last()]", timeout=15 * 1000, state='attached')
             last_price = self.page.locator(f"xpath=(//span[contains(@class,'price') and not(contains(@class,'old')) and not(ancestor::span[contains(@class,'old-price')])])[last()]")
             last_price_text = (await last_price.text_content()).strip()
 
@@ -75,7 +75,7 @@ class JerseyMail:
                 if normalized_last_price > 250:
                     in_budget = False
                 else:
-                    await self.wait_for_selector_and_click("//button[contains(.,'Load More')]", 10 * 1000)
+                    await self.wait_for_selector_and_click("//button[contains(.,'Load More')]", 15 * 1000)
                     await asyncio.sleep(2)
 
         all_catalog_items_xpath = "//div[contains(@class,'catalog') and not(contains(.,'Print') and not(contains(.,'Celebration')))]"
@@ -86,7 +86,7 @@ class JerseyMail:
         all_catalog_items_dict = {}
 
         for item in range(all_catalog_items_count):
-            await self.page.wait_for_selector(selector=f"xpath=({all_catalog_items_xpath})[{item+1}]", timeout=10 * 1000, state='visible')
+            await self.page.wait_for_selector(selector=f"xpath=({all_catalog_items_xpath})[{item+1}]", timeout=15 * 1000, state='attached')
 
             sale_element = self.page.locator(f"xpath=({all_catalog_items_xpath})[{item + 1}]//*[contains(text(),'SALE')]")
 
