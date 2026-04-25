@@ -53,7 +53,6 @@ class EmailSender:
         with open(os.path.join(BASE_DIR, "email_template.html"), "r", encoding="utf-8") as f:
             template = f.read()
 
-        print(self.available_products)
         rows = self.build_email_rows(self.available_products)
 
         ready_email = template.replace("{{ROWS}}", rows)
